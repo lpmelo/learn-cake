@@ -1,0 +1,43 @@
+:root {
+    /* Colors */
+    --bs-primary: #085474;
+    --bs-secondary: #FD921C;
+    --bs-success: #28a745;
+    --bs-danger: #dc3545;
+
+    /* Focus colors */
+    --bs-primary-focus: #08547460;
+    --bs-primary-border-color-focus: #08547490;
+    --bs-secondary-focus: #FD921C60;
+    --bs-secondary-border-color-focus: #FD921C90;
+}
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--bs-primary) !important;
+    --bs-btn-border-color: var(--bs-primary);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--bs-secondary);
+    --bs-btn-hover-border-color: #03030360;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #FD921C90;
+    --bs-btn-active-border-color: #FD921C90;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #08547490;
+    --bs-btn-disabled-border-color: #08547490;
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: var(--bs-primary-border-color-focus);
+    outline: 0;
+    box-shadow: 0 0 0 .25rem var(--bs-primary-focus);
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}

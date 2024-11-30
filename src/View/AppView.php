@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -13,6 +14,7 @@ declare(strict_types=1);
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\View;
 
 use Cake\View\View;
@@ -35,7 +37,38 @@ class AppView extends View
      *
      * @return void
      */
-    public function initialize(): void
+    public function initialize(): void {}
+
+    public function head($title = 'StorageFlow', $icon = null, $additionalConfigs = null)
     {
+        ob_start();
+?>
+
+        <head>
+            <?= $this->Html->charset() ?>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+
+            <title>
+                <?= $title ? $title : 'StorageFlow' ?>
+            </title>
+
+            <?= $icon ? $this->Html->meta('icon', $icon) : $this->Html->meta('icon') ?>
+
+
+
+            <?= $this->fetch('meta') ?>
+            <?= $this->fetch('css') ?>
+            <?= $this->fetch('script') ?>
+
+            <script src="/plugins/bootstrap-5.3.3/dist/js/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="/plugins/bootstrap-5.3.3/dist/css/bootstrap.min.css">
+
+            <?= $this->Html->css('global') ?>
+
+            <?= $additionalConfigs ?>
+        </head>
+
+<?php
+        return ob_get_clean();
     }
 }
