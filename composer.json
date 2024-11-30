@@ -36,7 +36,10 @@
         }
     },
     "scripts": {
-        "start": "bin/cake server",
+        "start": "composer run-script serve --timeout=0",
+        "serve": "bin/cake server",
+        "bakeModel": "bin/cake bake model",
+        "bakeController": "bin/cake bake controller",
         "migrations": "bin/cake migrations",
         "migrate": "bin/cake migrations migrate",
         "bakeMigration": "bin/cake bake migration",
