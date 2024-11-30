@@ -37,6 +37,10 @@
     },
     "scripts": {
         "start": "bin/cake server",
+        "migrations": "bin/cake migrations",
+        "migrate": "bin/cake migrations migrate",
+        "bakeMigration": "bin/cake bake migration",
+        "bakeSeed": "bin/cake bake seed",
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
         "check": [
