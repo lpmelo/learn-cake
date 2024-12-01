@@ -1,7 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use App\Model\Entity\Authentication;
+use Cake\Utility\Text;
 
 /**
  * Authentications Controller
@@ -96,5 +100,81 @@ class AuthenticationsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function login()
+    {
+        $this->request->allowMethod(['post']);
+
+        if ($this->request->is('post')) {
+            $httpResponse = $this->response;
+
+            $username = $this->request->getData('username');
+            $password = $this->request->getData('password');
+
+            $userTable = $this->fetchTable('users');
+            $user = $userTable->find()->where(['Users.username' => $username, 'Users.password' => md5($password)])->first();
+
+            if ($user) {
+                $authTable = $this->fetchTable('authentications');
+
+                $existentAuth = $authTable->find()->where(['Authentications.fk_id_user' => $user['id_user']])->first();
+
+                if ($existentAuth) {
+                    $statement = $authTable->updateQuery()
+                        ->set(['Authentications.token' => Text::uuid()])
+                        ->where(['Authentications.id_auth' => $existentAuth['id_auth']])
+                        ->execute();
+
+                    $rowsAffected = $statement->rowCount();
+
+                    if (!empty($rowsAffected)) {
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Login realizado com sucesso!',
+                            'data' => [
+                                'username' => $user->username,
+                                'email' => $user->email,
+                            ]
+                        ];
+                    } else {
+                        $httpResponse = $httpResponse->withStatus(500);
+                        $response = [
+                            'status' => 'error',
+                            'message' => 'Erro ao tentar realizar o login!'
+                        ];
+                    }
+                } else {
+                    $authentication = new Authentication(['fk_id_user' => $user['id_user'], 'token' => Text::uuid()]);
+
+                    if ($authTable->save($authentication)) {
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Login realizado com sucesso!',
+                            'data' => [
+                                'username' => $user->username,
+                                'email' => $user->email,
+                            ]
+                        ];
+                    } else {
+                        $httpResponse = $httpResponse->withStatus(500);
+                        $response = [
+                            'status' => 'error',
+                            'message' => 'Erro ao tentar realizar o login!'
+                        ];
+                    };
+                }
+            } else {
+                $httpResponse = $httpResponse->withStatus(403);
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Usuario ou senha invalidos'
+                ];
+            }
+
+            $httpResponse = $httpResponse->withType('json');
+
+            return $httpResponse->withStringBody(json_encode($response));;
+        }
     }
 }
