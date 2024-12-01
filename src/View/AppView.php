@@ -60,8 +60,9 @@ class AppView extends View
                     <?= $this->fetch('script') ?>
 
                     <script src="/plugins/jquery-3.7.1/dist/jquery-3.7.1.min.js"></script>
-                    <script src="/plugins/bootstrap-5.3.3/dist/js/bootstrap.min.js"></script>
+                    <script src="/plugins/bootstrap-5.3.3/dist/js/bootstrap.bundle.min.js"></script>
                     <link rel="stylesheet" href="/plugins/bootstrap-5.3.3/dist/css/bootstrap.min.css">
+                    <link rel="stylesheet" href="/plugins/bootstrap-icons-1.11.0/bootstrap-icons.css">
                     <script src="/plugins/sweetalert2-11.14.5/dist/js/sweetalert2.all.min.js"></script>
                     <link rel="stylesheet" href="/plugins/sweetalert2-11.14.5/dist/css/sweetalert2.min.css">
 

@@ -4,6 +4,11 @@
     --bs-secondary: #FD921C;
     --bs-success: #28a745;
     --bs-danger: #dc3545;
+    --bs-primary-rgb: 8, 84, 116;
+    --bs-secondary-rgb: 253, 146, 28;
+    --bs-success-rgb: 40, 167, 69;
+    --bs-danger-rgb: 220, 53, 69;
+    --bs-primary-darker-rgb: 4, 42, 58;
 
     /* Focus colors */
     --bs-primary-focus: #08547460;
@@ -29,6 +34,23 @@
     --bs-btn-disabled-border-color: #08547490;
 }
 
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-primary-darker-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: var(--bs-nav-pills-link-active-bg);
+}
+
+.nav-pills {
+    --bs-nav-pills-border-radius: var(--bs-border-radius);
+    --bs-nav-pills-link-active-color: #fff;
+    --bs-nav-pills-link-active-bg: var(--bs-secondary);
+}
+
 .form-control:focus {
     color: var(--bs-body-color);
     background-color: var(--bs-body-bg);
@@ -48,7 +70,8 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
     background-color: var(--bs-primary);
     color: #fff;
     font-size: 1em;
-    &:hover{
+
+    &:hover {
         background-color: var(--bs-secondary);
     }
 }

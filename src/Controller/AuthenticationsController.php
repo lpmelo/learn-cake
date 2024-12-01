@@ -111,6 +111,7 @@ class AuthenticationsController extends AppController
 
             $username = $this->request->getData('username');
             $password = $this->request->getData('password');
+            $newAuthToken = Text::uuid();
 
             $userTable = $this->fetchTable('users');
             $user = $userTable->find()->where(['Users.username' => $username, 'Users.password' => md5($password)])->first();
@@ -119,7 +120,7 @@ class AuthenticationsController extends AppController
                 $authTable = $this->fetchTable('authentications');
 
                 $existentAuth = $authTable->find()->where(['Authentications.fk_id_user' => $user['id_user']])->first();
-
+                
                 if ($existentAuth) {
                     $statement = $authTable->updateQuery()
                         ->set(['Authentications.token' => Text::uuid()])
@@ -129,13 +130,13 @@ class AuthenticationsController extends AppController
                     $rowsAffected = $statement->rowCount();
 
                     if (!empty($rowsAffected)) {
+                        $this->request->getSession()->write('User.username', $user->username);
+                        $this->request->getSession()->write('User.email', $user->email);
+                        $this->request->getSession()->write('User.token', $newAuthToken);
+
                         $response = [
                             'status' => 'success',
                             'message' => 'Login realizado com sucesso!',
-                            'data' => [
-                                'username' => $user->username,
-                                'email' => $user->email,
-                            ]
                         ];
                     } else {
                         $httpResponse = $httpResponse->withStatus(500);
@@ -145,16 +146,16 @@ class AuthenticationsController extends AppController
                         ];
                     }
                 } else {
-                    $authentication = new Authentication(['fk_id_user' => $user['id_user'], 'token' => Text::uuid()]);
+                    $authentication = new Authentication(['fk_id_user' => $user['id_user'], 'token' => $newAuthToken]);
 
                     if ($authTable->save($authentication)) {
+                        $this->request->getSession()->write('User.username', $user->username);
+                        $this->request->getSession()->write('User.email', $user->email);
+                        $this->request->getSession()->write('User.token', $newAuthToken);
+
                         $response = [
                             'status' => 'success',
-                            'message' => 'Login realizado com sucesso!',
-                            'data' => [
-                                'username' => $user->username,
-                                'email' => $user->email,
-                            ]
+                            'message' => 'Login realizado com sucesso!'
                         ];
                     } else {
                         $httpResponse = $httpResponse->withStatus(500);
@@ -176,5 +177,10 @@ class AuthenticationsController extends AppController
 
             return $httpResponse->withStringBody(json_encode($response));;
         }
+    }
+
+    public function logout(){
+        $this->getRequest()->getSession()->destroy();
+        return $this->redirect('/');
     }
 }
